@@ -168,4 +168,23 @@ public class LaptopRepositoryImpl implements LaptopRepository {
         }
     }
 
+    @Override
+    public void buy(String id, String stok) {
+        String sql = "update laptop set stok = ? where id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+
+            stmt.setString(1, stok);
+            stmt.setString(2, id);
+
+            stmt.executeUpdate();
+
+            stmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+
+        }
+    }
+
 }

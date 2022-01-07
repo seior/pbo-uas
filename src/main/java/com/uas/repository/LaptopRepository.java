@@ -23,4 +23,6 @@ public interface LaptopRepository {
     
     public void deleteById(String id);
 
+    public void buy(String id, String stok);
+
 }

@@ -4,8 +4,10 @@
  */
 package com.uas.modules.login;
 
+import com.uas.exception.NotFoundException;
 import com.uas.model.Toko;
 import com.uas.model.User;
+import com.uas.modules.home.HomeUser;
 import com.uas.repository.TokoRepository;
 import com.uas.repository.UserRepository;
 import com.uas.repository.impl.TokoRepositoryImpl;
@@ -240,8 +242,15 @@ public class Login extends javax.swing.JFrame {
             user.setUsername(usernameTF.getText());
             user.setPassword(String.valueOf(passwordTF.getPassword()));
 
+
             if (this.userRepository.login(user)) {
-                System.out.println("login succcess");
+                try {
+                    User newUser = userRepository.findByUsername(user.getUsername());
+                    new HomeUser(newUser.getNama()).setVisible(true);
+                    this.dispose();
+                } catch (NotFoundException e) {
+                    JOptionPane.showMessageDialog(null, "Username atau Password Salah");
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "Username atau Password Salah");
             }
