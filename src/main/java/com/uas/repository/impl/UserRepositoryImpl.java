@@ -2,7 +2,6 @@ package com.uas.repository.impl;
 
 import com.uas.app.Database;
 import com.uas.exception.NotFoundException;
-import com.uas.model.Toko;
 import com.uas.model.User;
 import com.uas.repository.UserRepository;
 
@@ -10,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class UserRepositoryImpl implements UserRepository {
@@ -79,7 +80,6 @@ public class UserRepositoryImpl implements UserRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
-
     }
 
     @Override
@@ -95,6 +95,39 @@ public class UserRepositoryImpl implements UserRepository {
 
         } catch (NotFoundException e) {
             return false;
+        }
+    }
+
+    @Override
+    public List<User> findAll() {
+        String sql = "select * from user";
+        List<User> users = new ArrayList<>();
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+
+            ResultSet result = stmt.executeQuery();
+
+            while (result.next()) {
+                User user = new User();
+
+                user.setUsername(result.getString(1));
+                user.setPassword(result.getString(2));
+                user.setNama(result.getString(3));
+                user.setAlamat(result.getString(4));
+                user.setNoTelp(result.getString(5));
+                user.setJk(result.getString(6));
+                user.setRole(result.getString(7));
+
+                users.add(user);
+            }
+
+            stmt.close();
+            result.close();
+
+            return users;
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 }

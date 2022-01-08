@@ -13,6 +13,8 @@ public interface TransaksiRepository {
 
     public List<Transaksi> findAll(String username);
 
+    public List<Transaksi> findAll();
+
     public List<TransaksiToko> findAllTransaksiToko(String username);
 
 }

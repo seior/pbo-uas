@@ -101,6 +101,40 @@ public class TransaksiRepositoryimpl implements TransaksiRepository {
     }
 
     @Override
+    public List<Transaksi> findAll() {
+        String sql = "select * from transaksi";
+
+        List<Transaksi> transaksis = new ArrayList<>();
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                Transaksi transaksi = new Transaksi();
+
+                transaksi.setId(resultSet.getString(1));
+                transaksi.setIdLaptop(resultSet.getString(2));
+                transaksi.setJasaPengiriman(resultSet.getString(3));
+                transaksi.setAlamat(resultSet.getString(4));
+                transaksi.setPembayaran(resultSet.getString(5));
+                transaksi.setTotalBayar(resultSet.getString(6));
+                transaksi.setUsername(resultSet.getString(7));
+
+                transaksis.add(transaksi);
+            }
+
+            stmt.close();
+            resultSet.close();
+
+            return transaksis;
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
     public List<TransaksiToko> findAllTransaksiToko(String username) {
         String sql = "select t.id, t.id_laptop, t.pembayaran, t.total_bayar, t.jasa_pengiriman, t.alamat, t.username as pembeli " +
                 "from transaksi t join laptop l on (t.id_laptop = l.id) where l.username = ?";

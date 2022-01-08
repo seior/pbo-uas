@@ -7,6 +7,8 @@ package com.uas.repository;
 import com.uas.exception.NotFoundException;
 import com.uas.model.Toko;
 
+import java.util.List;
+
 /**
  *
  * @author seior
@@ -18,5 +20,7 @@ public interface TokoRepository {
     public Toko FindByUsername(String username) throws NotFoundException;
 
     public Boolean login(Toko toko);
+
+    public List<Toko> findAll();
 
 }

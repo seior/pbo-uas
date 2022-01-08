@@ -7,6 +7,7 @@ package com.uas.modules.login;
 import com.uas.exception.NotFoundException;
 import com.uas.model.Toko;
 import com.uas.model.User;
+import com.uas.modules.home.HomeAdmin;
 import com.uas.modules.home.HomeUser;
 import com.uas.repository.TokoRepository;
 import com.uas.repository.UserRepository;
@@ -245,8 +246,14 @@ public class Login extends javax.swing.JFrame {
             if (this.userRepository.login(user)) {
                 try {
                     User newUser = userRepository.findByUsername(user.getUsername());
+
+                    if (newUser.getRole().equals("admin")) {
+                        new HomeAdmin(newUser.getNama()).setVisible(true);
+                    } else {
                     HomeUser homeUser = new HomeUser(newUser.getNama(), newUser.getUsername());
-                    homeUser.setVisible(true);
+                        homeUser.setVisible(true);
+                    }
+
                     this.dispose();
                 } catch (NotFoundException e) {
                     JOptionPane.showMessageDialog(null, "Username atau Password Salah");

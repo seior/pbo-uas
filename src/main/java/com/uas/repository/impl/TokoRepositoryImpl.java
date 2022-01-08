@@ -8,21 +8,23 @@ import com.uas.app.Database;
 import com.uas.exception.NotFoundException;
 import com.uas.model.Toko;
 import com.uas.repository.TokoRepository;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author seior
  */
 public class TokoRepositoryImpl implements TokoRepository {
 
-    private Connection connection;
+    private final Connection connection;
 
     public TokoRepositoryImpl() {
         connection = Database.getConnection();
@@ -97,6 +99,37 @@ public class TokoRepositoryImpl implements TokoRepository {
             return false;
         }
 
+    }
+
+    @Override
+    public List<Toko> findAll() {
+        String sql = "select * from toko";
+        List<Toko> tokos = new ArrayList<>();
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+
+            ResultSet result = stmt.executeQuery();
+
+            while (result.next()) {
+                Toko toko = new Toko();
+
+                toko.setUsername(result.getString(1));
+                toko.setPassword(result.getString(2));
+                toko.setNamaToko(result.getString(3));
+                toko.setAlamat(result.getString(4));
+                toko.setRating(result.getFloat(5));
+
+                tokos.add(toko);
+            }
+
+            stmt.close();
+            result.close();
+
+            return tokos;
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
 }
