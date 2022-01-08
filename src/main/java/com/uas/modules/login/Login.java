@@ -33,7 +33,6 @@ public class Login extends javax.swing.JFrame {
         this.tokoRepository = new TokoRepositoryImpl();
         this.userRepository = new UserRepositoryImpl();
 
-        this.setLocationRelativeTo(null);
 
         initComponents();
 
@@ -246,7 +245,8 @@ public class Login extends javax.swing.JFrame {
             if (this.userRepository.login(user)) {
                 try {
                     User newUser = userRepository.findByUsername(user.getUsername());
-                    new HomeUser(newUser.getNama()).setVisible(true);
+                    HomeUser homeUser = new HomeUser(newUser.getNama(), newUser.getUsername());
+                    homeUser.setVisible(true);
                     this.dispose();
                 } catch (NotFoundException e) {
                     JOptionPane.showMessageDialog(null, "Username atau Password Salah");

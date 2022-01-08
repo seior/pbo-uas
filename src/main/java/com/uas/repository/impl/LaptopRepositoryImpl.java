@@ -6,7 +6,9 @@ package com.uas.repository.impl;
 
 import com.uas.app.Database;
 import com.uas.model.Laptop;
+import com.uas.model.LaptopToko;
 import com.uas.repository.LaptopRepository;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,12 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author seior
  */
 public class LaptopRepositoryImpl implements LaptopRepository {
 
-    private Connection connection;
+    private final Connection connection;
 
     public LaptopRepositoryImpl() {
         this.connection = Database.getConnection();
@@ -105,6 +106,43 @@ public class LaptopRepositoryImpl implements LaptopRepository {
                 laptop.setTipe(result.getString(6));
                 laptop.setDeskripsi(result.getString(7));
                 laptop.setUsername(result.getString(8));
+
+                laptops.add(laptop);
+            }
+
+            stmt.close();
+            result.close();
+
+            return laptops;
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<LaptopToko> findAllToko() {
+        String sql = "select l.username ,l.harga, l.nama, l.terjual, l.kondisi, l.tipe, l.deskripsi, t.nama_toko, l.id from laptop l" +
+                " join toko t on (l.username = t.username)";
+
+        List<LaptopToko> laptops = new ArrayList<>();
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+
+            ResultSet result = stmt.executeQuery();
+
+            while (result.next()) {
+                LaptopToko laptop = new LaptopToko();
+
+                laptop.setId(result.getString(9));
+                laptop.setUsername(result.getString(1));
+                laptop.setHarga(result.getString(2));
+                laptop.setNama(result.getString(3));
+                laptop.setTerjual(result.getString(4));
+                laptop.setKondisi(result.getString(5));
+                laptop.setTipe(result.getString(6));
+                laptop.setDeskripsi(result.getString(7));
+                laptop.setNamaToko(result.getString(8));
 
                 laptops.add(laptop);
             }

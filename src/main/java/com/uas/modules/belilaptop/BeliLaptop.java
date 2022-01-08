@@ -4,24 +4,66 @@
  */
 package com.uas.modules.belilaptop;
 
+import com.uas.model.LaptopToko;
 import com.uas.repository.LaptopRepository;
 import com.uas.repository.impl.LaptopRepositoryImpl;
 
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+
 /**
- *
  * @author seior
  */
 public class BeliLaptop extends javax.swing.JFrame {
 
     private LaptopRepository laptopRepository;
+    private DefaultTableModel tableModel;
+    private String username;
 
     /**
      * Creates new form BeliLaptop
      */
-    public BeliLaptop() {
+    public BeliLaptop(String username) {
+        this.username = username;
         this.laptopRepository = new LaptopRepositoryImpl();
 
         initComponents();
+
+        showTable();
+        showDataTable();
+    }
+
+    public void showTable() {
+        Object[] tableName = {
+                "id", "username", "harga", "nama", "terjual", "kondisi", "tipe", "deskripsi", "toko"
+        };
+
+        tableModel = new DefaultTableModel(null, tableName);
+
+        laptopTabel.setModel(tableModel);
+    }
+
+    public void showDataTable() {
+        tableModel.getDataVector().removeAllElements();
+        tableModel.fireTableDataChanged();
+
+        List<LaptopToko> result = laptopRepository.findAllToko();
+
+        result.forEach(laptop -> {
+            Object[] data = {
+                    laptop.getId(),
+                    laptop.getUsername(),
+                    laptop.getHarga(),
+                    laptop.getNama(),
+                    laptop.getTerjual(),
+                    laptop.getKondisi(),
+                    laptop.getTipe(),
+                    laptop.getDeskripsi(),
+                    laptop.getNamaToko()
+            };
+
+            tableModel.addRow(data);
+        });
     }
 
     /**
@@ -63,14 +105,19 @@ public class BeliLaptop extends javax.swing.JFrame {
 
         jLabel5.setText("Deskripsi");
 
+        namaLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         namaLabel.setText("kosong");
 
+        hargaLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         hargaLabel.setText("kosong");
 
+        kondisiLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         kondisiLabel.setText("kosong");
 
+        tipeLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         tipeLabel.setText("kosong");
 
+        deskripsiLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         deskripsiLabel.setText("kosong");
 
         laptopTabel.setModel(new javax.swing.table.DefaultTableModel(
@@ -84,9 +131,19 @@ public class BeliLaptop extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        laptopTabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                laptopTabelMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(laptopTabel);
 
         beliBTN.setText("Beli");
+        beliBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                beliBTNActionPerformed(evt);
+            }
+        });
 
         kembaliBTN.setText("Kembali");
         kembaliBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -99,34 +156,29 @@ public class BeliLaptop extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(tipeLabel))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(kondisiLabel))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(hargaLabel))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(deskripsiLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+                    .addComponent(tipeLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(kondisiLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(hargaLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(namaLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(29, 29, 29)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(48, 48, 48)
-                        .addComponent(namaLabel))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(33, 33, 33)
-                        .addComponent(deskripsiLabel))
-                    .addComponent(beliBTN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(kembaliBTN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(beliBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(kembaliBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,16 +202,15 @@ public class BeliLaptop extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(deskripsiLabel))
-                .addGap(18, 18, 18)
-                .addComponent(beliBTN)
-                .addGap(18, 18, 18)
-                .addComponent(kembaliBTN)
+                    .addComponent(deskripsiLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(beliBTN)
+                    .addComponent(kembaliBTN))
+                .addGap(0, 124, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -185,6 +236,24 @@ public class BeliLaptop extends javax.swing.JFrame {
     private void kembaliBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kembaliBTNActionPerformed
         this.dispose();
     }//GEN-LAST:event_kembaliBTNActionPerformed
+
+    private void laptopTabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_laptopTabelMouseClicked
+        namaLabel.setText(laptopTabel.getValueAt(laptopTabel.getSelectedRow(), 3).toString());
+        hargaLabel.setText(laptopTabel.getValueAt(laptopTabel.getSelectedRow(), 2).toString());
+        kondisiLabel.setText(laptopTabel.getValueAt(laptopTabel.getSelectedRow(), 5).toString());
+        tipeLabel.setText(laptopTabel.getValueAt(laptopTabel.getSelectedRow(), 6).toString());
+        deskripsiLabel.setText(laptopTabel.getValueAt(laptopTabel.getSelectedRow(), 7).toString());
+    }//GEN-LAST:event_laptopTabelMouseClicked
+
+    private void beliBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beliBTNActionPerformed
+        LaptopToko laptopToko = new LaptopToko();
+
+        laptopToko.setId(laptopTabel.getValueAt(laptopTabel.getSelectedRow(), 0).toString());
+        laptopToko.setHarga(hargaLabel.getText());
+        laptopToko.setUsername(this.username);
+        
+        new TransaksiBaru(laptopToko).setVisible(true);
+    }//GEN-LAST:event_beliBTNActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton beliBTN;

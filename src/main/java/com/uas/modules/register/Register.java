@@ -33,7 +33,6 @@ public class Register extends javax.swing.JFrame {
         this.userRepository = new UserRepositoryImpl();
 
         titleLabel.setText(titleLabel.getText() + title);
-        this.setLocationRelativeTo(null);
 
         if (title.equals("penjual")) {
             noTelpTF.setVisible(false);

@@ -6,6 +6,7 @@ package com.uas.modules.home;
 
 import com.uas.model.Laptop;
 import com.uas.modules.login.Login;
+import com.uas.modules.transaksi.LihatTransaksiToko;
 import com.uas.repository.LaptopRepository;
 import com.uas.repository.impl.LaptopRepositoryImpl;
 
@@ -30,7 +31,6 @@ public class HomeToko extends javax.swing.JFrame {
         this.laptopRepository = new LaptopRepositoryImpl();
         this.username = username;
 
-        this.setLocationRelativeTo(null);
         initComponents();
 
         showTable();
@@ -41,7 +41,7 @@ public class HomeToko extends javax.swing.JFrame {
 
     public void showTable() {
         Object[] tableName = {
-                "id", "harga", "nama", "terjual", "kondisi", "tipe", "deskripsi"
+                "id", "nama", "harga", "terjual", "kondisi", "tipe", "deskripsi"
         };
 
         tableModel = new DefaultTableModel(null, tableName);
@@ -58,8 +58,8 @@ public class HomeToko extends javax.swing.JFrame {
         result.forEach(laptop -> {
             Object[] data = {
                     laptop.getId(),
-                    laptop.getHarga(),
                     laptop.getNama(),
+                    laptop.getHarga(),
                     laptop.getTerjual(),
                     laptop.getKondisi(),
                     laptop.getTipe(),
@@ -98,6 +98,7 @@ public class HomeToko extends javax.swing.JFrame {
         logoutBTN = new javax.swing.JButton();
         hapusBTN = new javax.swing.JButton();
         updateBTN = new javax.swing.JButton();
+        orderBTN = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -172,12 +173,21 @@ public class HomeToko extends javax.swing.JFrame {
             }
         });
 
+        orderBTN.setText("Lihat Semua Pemesanan");
+        orderBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                orderBTNActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(orderBTN)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(logoutBTN)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(keluarBTN)
@@ -205,11 +215,11 @@ public class HomeToko extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(tambahBTN)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(updateBTN)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(hapusBTN)
-                                .addGap(54, 54, 54))
+                                .addGap(60, 60, 60))
                             .addComponent(tipeTF, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addGap(18, 18, 18)
@@ -250,7 +260,8 @@ public class HomeToko extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(keluarBTN)
-                    .addComponent(logoutBTN))
+                    .addComponent(logoutBTN)
+                    .addComponent(orderBTN))
                 .addContainerGap(65, Short.MAX_VALUE))
         );
 
@@ -336,6 +347,10 @@ public class HomeToko extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_keluarBTNActionPerformed
 
+    private void orderBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderBTNActionPerformed
+        new LihatTransaksiToko(this.username).setVisible(true);
+    }//GEN-LAST:event_orderBTNActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea deskripsiTA;
     private javax.swing.JButton hapusBTN;
@@ -353,6 +368,7 @@ public class HomeToko extends javax.swing.JFrame {
     private javax.swing.JTable laptopTabel;
     private javax.swing.JButton logoutBTN;
     private javax.swing.JTextField namaTF;
+    private javax.swing.JButton orderBTN;
     private javax.swing.JButton tambahBTN;
     private javax.swing.JTextField tipeTF;
     private javax.swing.JButton updateBTN;

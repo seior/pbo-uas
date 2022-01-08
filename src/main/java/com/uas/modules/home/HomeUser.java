@@ -6,19 +6,22 @@ package com.uas.modules.home;
 
 import com.uas.modules.belilaptop.BeliLaptop;
 import com.uas.modules.login.Login;
+import com.uas.modules.transaksi.LihatTransaksi;
 
 /**
  * @author seior
  */
 public class HomeUser extends javax.swing.JFrame {
 
+    private String username;
+
     /**
      * Creates new form HomeUser
      */
-    public HomeUser(String name) {
+    public HomeUser(String name, String username) {
         initComponents();
-        this.setLocationRelativeTo(null);
 
+        this.username = username;
         welcomeLabel.setText(welcomeLabel.getText() + name);
     }
 
@@ -53,6 +56,11 @@ public class HomeUser extends javax.swing.JFrame {
         });
 
         transaksiBTN.setText("Lihat Transaksi");
+        transaksiBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transaksiBTNActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Keluar");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -132,8 +140,12 @@ public class HomeUser extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void beliBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beliBTNActionPerformed
-        new BeliLaptop().setVisible(true);
+        new BeliLaptop(this.username).setVisible(true);
     }//GEN-LAST:event_beliBTNActionPerformed
+
+    private void transaksiBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transaksiBTNActionPerformed
+       new LihatTransaksi(this.username).setVisible(true);
+    }//GEN-LAST:event_transaksiBTNActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton beliBTN;
