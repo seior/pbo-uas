@@ -70,5 +70,15 @@
     
     alter table user
         add role enum ('user', 'admin') not null default ('user');
+  
+    insert into user (username, password, nama, alamat, no_telp, jk)
+        values ('admin', '123', 'Mancing Mania !!!, mantapp', 'Bogor', '0851551332156', 'laki-laki');
     ```
 - Jalakan file Main.java di folder src
+
+## Login Admin
+- pilih login sebagai pembeli lalu isi :
+  ```text 
+  username : admin
+  password : 123
+  ```
